@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthenticatedSessionKeycloakController;
+use App\Http\Controllers\Auth\LoginControllerKey;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -24,6 +26,12 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
+
+Route::get('login-keycloak', [AuthenticatedSessionKeycloakController::class, 'redirectToProvider'])
+    ->name('login.keycloak');
+Route::get('callback', [AuthenticatedSessionKeycloakController::class, 'handleProviderCallback']);
+Route::get('logout-keycloak', [AuthenticatedSessionKeycloakController::class, 'destroy'])
+        ->name('logout.keycloak');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
